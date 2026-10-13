@@ -7,7 +7,7 @@ import architecture from "../assets/lance-full.webp";
 export function LancePage() {
   return (
     <>
-      <Link href="index.html#work">Back</Link>
+      <Link href="/#work">Back</Link>
       <h1 className={title}>LANCE: learning enzyme kinetics</h1>
       <p className={meta}>
         Bach Pham, Kinjal Mondal &amp; Jeffery B. Klauda
@@ -113,7 +113,7 @@ export function LancePage() {
         across nested cohorts, not statistical significance.
       </p>
       <div className="my-7">
-        <Link href="index.html#work">Back</Link>
+        <Link href="/#work">Back</Link>
       </div>
     </>
   );

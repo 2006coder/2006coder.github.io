@@ -26,7 +26,7 @@ function Equation({
 export function SfmPage() {
   return (
     <article className="[&_p]:mb-5">
-      <Link href="index.html#robotics">Back</Link>
+      <Link href="/#robotics">Back</Link>
       <h1 className={title}>
         From 2D Images to 3D Worlds: The Linear Algebra of Structure from Motion
       </h1>
@@ -465,7 +465,7 @@ x_m x'_m & x_m y'_m & x_m & y_m x'_m & y_m y'_m & y_m & x'_m & y'_m & 1
         </Link>
       </p>
       <div className="my-7">
-        <Link href="index.html#robotics">Back</Link>
+        <Link href="/#robotics">Back</Link>
       </div>
     </article>
   );

@@ -13,7 +13,7 @@ export function HomePage() {
         Physics minor, Math minor<br/>
         Earlham College | Class of 2028
       </p>
-      <Link href="index.html#education" className="mt-6">Explore my background --&gt;</Link>
+      <Link href="/#education" className="mt-6">Explore my background --&gt;</Link>
     </section>
     <section id="education" className="pb-8">
       <h2 className={title}>Education</h2>

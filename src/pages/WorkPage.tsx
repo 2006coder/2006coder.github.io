@@ -14,7 +14,7 @@ export function WorkPage() {
         </h2>
         <article className="py-10 sm:py-12">
           <h3 className="mb-4 text-[30px] font-bold leading-tight wrap-break-word sm:text-[38px]">
-            <Link href="lance.html">LANCE-7R: enzyme kinetics prediction</Link>
+            <Link href="/lance">LANCE-7R: enzyme kinetics prediction</Link>
           </h3>
           <p className={meta}>2026 | Latest manuscript | Not yet published</p>
           <p className="mb-5">
@@ -37,7 +37,7 @@ export function WorkPage() {
               on the same 348 rows.</li>
           </ul>
           <p>
-            <Link href="lance.html">More in-depth details</Link>
+            <Link href="/lance">More in-depth details</Link>
           </p>
         </article>
         <article id="acl-publication" className="py-10 sm:py-12">
@@ -158,7 +158,7 @@ export function WorkPage() {
           <li><strong>Operations:</strong> daily spending limits and tested backup recovery as usage grows.</li>
         </ul>
         <p className="mb-5">
-          <Link href="librechat.html">What I built, maintained, and learned --&gt;</Link>
+          <Link href="/librechat">What I built, maintained, and learned --&gt;</Link>
         </p>
       </article>
       <article id="sysadmin" className="pt-16 pb-6">
@@ -172,7 +172,7 @@ export function WorkPage() {
           Faraday, maintaining GPU-ready environments, Jupyter access, certificates, and shared storage.
         </p>
         <p className="mb-5">
-          <Link href="sysadmin.html">Servers, software &amp; what I learned --&gt;</Link>
+          <Link href="/sysadmin">Servers, software &amp; what I learned --&gt;</Link>
         </p>
       </article>
       <article id="teaching" className="pt-16 pb-6">
@@ -219,7 +219,7 @@ export function WorkPage() {
           reconstruction code was needed.
         </p>
         <p className="mb-5">
-          <Link href="sfm.html">Read my full SfM derivation and SVD proof</Link>
+          <Link href="/sfm">Read my full SfM derivation and SVD proof</Link>
         </p>
         <figure className="my-7">
           <div className="grid gap-5 sm:grid-cols-2">

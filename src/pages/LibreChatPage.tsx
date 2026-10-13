@@ -5,7 +5,7 @@ import librechat from "../assets/sysadmin/librechat.webp";
 export function LibreChatPage() {
   return (
     <>
-      <Link href="index.html#librechat">Back</Link>
+      <Link href="/#librechat">Back</Link>
       <h1 className={title}>LibreChat for Earlham College ITS</h1>
       <p className={meta}>
         Earlham ITS &amp; System Administration team | Primary
@@ -157,10 +157,10 @@ export function LibreChatPage() {
       </p>
 
       <p className="my-7">
-        <Link href="sysadmin.html">My broader systems administration work --&gt;</Link>
+        <Link href="/sysadmin">My broader systems administration work --&gt;</Link>
       </p>
       <div className="my-7">
-        <Link href="index.html#librechat">Back</Link>
+        <Link href="/#librechat">Back</Link>
       </div>
     </>
   );

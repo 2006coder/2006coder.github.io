@@ -2,10 +2,10 @@ import { Link } from "./Link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 const navigation = [
-  { label: "Hello", href: "index.html#hello" },
-  { label: "Education", href: "index.html#education" },
-  { label: "Work", href: "index.html#work" },
-  { label: "Skills", href: "index.html#skills" },
+  { label: "Hello", href: "/#hello" },
+  { label: "Education", href: "/#education" },
+  { label: "Work", href: "/#work" },
+  { label: "Skills", href: "/#skills" },
 ];
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -44,7 +44,7 @@ export function Layout({ children }: { children: ReactNode }) {
     <div
       className="min-h-screen pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] font-sans text-lg leading-[1.75] sm:text-2xl text-ink sm:[&_article_p]:text-justify"
       onClickCapture={(event) => {
-        if ((event.target as HTMLElement).closest("a")?.getAttribute("href")?.startsWith("index.html#")) {
+        if ((event.target as HTMLElement).closest("a")?.getAttribute("href")?.startsWith("/#")) {
           anchorJump.current = true;
           setNavVisible(true);
         }
@@ -57,7 +57,7 @@ export function Layout({ children }: { children: ReactNode }) {
           className={`sticky top-0 z-20 -mx-9 bg-paper px-9 pt-[calc(0.75rem+env(safe-area-inset-top))] pb-3 sm:-mx-8 sm:px-8 ${navVisible || menuOpen ? "" : "-translate-y-full"}`}
         >
           <div className="flex items-center justify-between gap-4">
-            <Link href="index.html" plain className="text-2xl">
+            <Link href="/" plain className="text-2xl">
               Bach Pham
             </Link>
             <button

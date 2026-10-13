@@ -7,7 +7,7 @@ import faraday from "../assets/sysadmin/faraday.webp";
 export function SysadminPage() {
   return (
     <>
-      <Link href="index.html#sysadmin">Back</Link>
+      <Link href="/#sysadmin">Back</Link>
       <h1 className={title}>Systems administration at Earlham</h1>
       <p className={meta}>Student systems administrator | February 2025-present</p>
       <p className="mb-5">
@@ -98,12 +98,12 @@ export function SysadminPage() {
         student-facing platform, model serving, and developer tools.
       </p>
       <p className="mb-5">
-        <Link href="librechat.html">
+        <Link href="/librechat">
           Read about LibreChat for Earlham College ITS --&gt;
         </Link>
       </p>
       <div className="my-7">
-        <Link href="index.html#sysadmin">Back</Link>
+        <Link href="/#sysadmin">Back</Link>
       </div>
     </>
   );
