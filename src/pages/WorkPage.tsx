@@ -300,7 +300,7 @@ export function WorkPage() {
         <p className={meta}>
           Earlham College &amp; University of Pittsburgh
           <br/>
-          With Debanjali Banerjee and Fengyi Gao
+          With Debanjali Banerjee
         </p>
         <p className="mb-5">
           Multitask learning for ACL and meniscus tear classification and
