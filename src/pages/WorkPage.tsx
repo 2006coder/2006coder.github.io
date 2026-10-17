@@ -22,17 +22,18 @@ export function WorkPage() {
             | Not yet published
           </p>
           <p className="mb-5">
-            I developed a <strong>22.53M-parameter PyTorch backbone</strong> that combines
-            frozen <strong>ESM++ protein language model features</strong> with RDKit
-            molecular graphs encoded by a directed message-passing neural network
-            (D-MPNN). One shared architecture predicts turnover, Michaelis, and
-            inhibition constants.
+            I developed a <strong>22.53M-parameter Python/PyTorch backbone</strong> that
+            combines frozen features from a <strong>600M-parameter ESM++ protein
+            language model</strong> with <strong>RDKit molecular graphs and a D-MPNN</strong>
+            {" "}(directed message-passing neural network). Trained with <strong>CUDA
+            BF16 mixed precision</strong>, it predicts <strong>3 kinetic parameters</strong>:
+            turnover, Michaelis, and inhibition constants.
           </p>
           <p className="mb-5">
-            Molecule-conditioned cross-attention and shared latent actions connect
+            <strong>Molecule-conditioned cross-attention</strong> and shared latent actions connect
             <strong> two JEPA-style objectives for binding and reaction</strong>, with
-            contrastive losses and SIGReg-style regularization. A <strong>406-parameter
-            label-memory module</strong> selectively corrects turnover predictions.
+            <strong> contrastive losses and SIGReg-style regularization</strong>. A <strong>406-parameter
+            label-memory module</strong> uses sequence-cluster exclusion to selectively correct turnover predictions.
             <strong> No reaction products are required at inference.</strong>
           </p>
           <p className="mb-5">
@@ -58,9 +59,10 @@ export function WorkPage() {
               0.865 to 0.788, an <strong className="bg-highlight px-1 text-rust">8.9% reduction</strong>{" "}
               versus retrained CatPred.</li>
             <li><strong>Currently running 12 controlled ablation experiments</strong>{" "}
-              on <strong>UMD's Zaratan HPC cluster</strong> under energybio-eng following
-              mentor feedback. Six loss configurations and two paired seeds test which
-              objectives contribute to the gains. <strong>Results are pending.</strong></li>
+              via <strong>Slurm on UMD's Zaratan HPC cluster</strong> following
+              mentor feedback: <strong>6 loss configurations, 2 paired seeds, and
+              3 memory comparisons</strong>. These test which objectives and retrieval
+              choices contribute to the gains. <strong>Results are pending.</strong></li>
           </ul>
           <p>
             <Link href="/lance">More in-depth details</Link>
@@ -174,14 +176,20 @@ export function WorkPage() {
           I collaborate directly with Earlham ITS department to build and maintain{" "}
           <Link href="https://chat.cluster.earlham.edu">Earlham's chat platform</Link>,
           a custom LibreChat deployment in internal beta. As primary maintainer, I
-          support about <strong>150 daily users</strong>, with Earlham SSO sign-in
+          support about <strong>150 daily users</strong>, with <strong>Earlham SSO</strong> sign-in
           and occasional contributions from two teammates.
         </p>
         <ul className="mb-6 list-disc space-y-4 pl-6">
-          <li><strong>Student tools:</strong> isolated coding workspaces and
-            self-service API keys for Earlham-hosted models, with no laptop GPU required.</li>
-          <li><strong>Local inference:</strong> migrated from Ollama to llama.cpp across two GPU nodes.</li>
-          <li><strong>Operations:</strong> daily spending limits and tested backup recovery as usage grows.</li>
+          <li><strong>Local LLM inference:</strong> migrated from Ollama to <strong>llama.cpp</strong>
+            {" "}across <strong>2 Linux nodes and 4 NVIDIA A5000 GPUs</strong>, with replica
+            routing, failover, and GPU memory allocation for models up to <strong>80B parameters</strong>.</li>
+          <li><strong>Self-service API keys:</strong> model selection, expiry, and revocation
+            let students use campus-hosted models in their own tools without a laptop GPU.</li>
+          <li><strong>Isolated coding workspaces:</strong> separate filesystem identities,
+            <strong> 15 GiB per-user quotas</strong>, network restrictions, read-only
+            system files, and a <strong>120-second command timeout</strong>.</li>
+          <li><strong>Service operations:</strong> a <strong>$3 daily online-model budget</strong>
+            {" "}per user, MongoDB backups, and database recovery tested in isolated containers.</li>
         </ul>
         <p className="mb-5">
           <Link href="/librechat">What I built, maintained, and learned --&gt;</Link>
@@ -193,10 +201,20 @@ export function WorkPage() {
         </h2>
         <p className={meta}>Student systems administrator | February 2025-present</p>
         <p className="mb-5">
-          I help keep Earlham's STEM computing infrastructure running: servers, research software,
-          and the dependencies students need for coursework and research. My main focus is
-          Faraday, maintaining GPU-ready environments, Jupyter access, certificates, and shared storage.
+          I administer <strong>Linux servers, scientific software, and dependencies</strong>
+          {" "}for Earlham's STEM coursework and research. My main focus is
+          <strong> Faraday's GPU computing environment</strong>.
         </p>
+        <ul className="mb-6 list-disc space-y-4 pl-6">
+          <li><strong>PyTorch and TensorFlow:</strong> separate Conda environments with
+            <strong> CUDA 12.4 and Jupyter kernels</strong>, avoiding framework dependency conflicts.</li>
+          <li><strong>Python 3.13 and environment modules:</strong> shared installations
+            on Faraday and Pollock, with dependency pinning to preserve GPU compatibility.</li>
+          <li><strong>Wildcard TLS renewal:</strong> automated with <strong>Certbot,
+            RFC 2136 DNS challenges, and BIND TSIG</strong> authentication.</li>
+          <li><strong>NFS shared storage:</strong> restored persistent home-directory
+            mounts on <strong>2 backup servers</strong>, Rossum and Dijkstra.</li>
+        </ul>
         <p className="mb-5">
           <Link href="/sysadmin">Servers, software &amp; what I learned --&gt;</Link>
         </p>
@@ -230,16 +248,18 @@ export function WorkPage() {
           and <strong className="bg-highlight px-1 text-rust">Pavan Mantripragada</strong>
         </p>
         <p className="mb-5">
-          My work at UMD took me from pixel-level matrix operations to 3D reconstruction,
-          Gaussian Splatting, and RLBench. I started by implementing Gaussian filters,
-          image derivatives in the x and y directions, and edge detection from scratch,
+          My work at UMD took me from <strong>pixel-level matrix operations</strong> to
+          <strong> structure from motion (SfM), COLMAP, Gaussian Splatting, and RLBench</strong>.
+          I started by implementing <strong>Gaussian filters, image derivatives in the
+          x and y directions, and edge detection from scratch</strong>,
           without image-processing libraries.
         </p>
         <p className="mb-5">
-          A 3x3 fundamental matrix constrains a point's match in the second image to a line.
-          My write-up derives this matrix from at least eight independent correspondences
-          and explains two uses of SVD: finding a unit-length least-squares solution,
-          then enforcing the rank-two constraint required by epipolar geometry.
+          A <strong>3x3 fundamental matrix</strong> constrains a point's match in the second image to a line.
+          My write-up derives this matrix from <strong>at least 8 independent correspondences</strong>
+          {" "}and explains two uses of <strong>singular value decomposition (SVD)</strong>:
+          finding a unit-length <strong>least-squares solution</strong>, then enforcing
+          the <strong>rank-two constraint</strong> required by epipolar geometry.
         </p>
         <p className="mb-5">
           Understanding the linear algebra helped me see why each step in the
@@ -275,8 +295,11 @@ export function WorkPage() {
           NYX-V quadruped
         </h2>
         <p className="mb-5">
-          An ESP32 robot with a custom 3D-printed chassis. Its two cores handle
-          Wi-Fi and inverse kinematics.
+          I built a <strong>12-degree-of-freedom quadruped</strong> with a custom
+          <strong> 3D-printed chassis</strong> and an <strong>ESP32</strong> controller.
+          The firmware uses <strong>C++ and FreeRTOS</strong>, separating Wi-Fi and
+          inverse-kinematics control across the ESP32's two cores. <strong>Inverse
+          kinematics</strong> converts desired foot positions into joint angles.
         </p>
         <figure className="my-7">
           <img
@@ -292,21 +315,6 @@ export function WorkPage() {
           <Link href="https://www.youtube.com/watch?v=fpvw82l82EE">
             Watch the robot
           </Link>
-        </p>
-      </article>
-      <article className="pt-16 pb-6">
-        <h2 className="mb-4 text-[32px] font-bold leading-tight wrap-break-word sm:text-[40px]">
-          Machine learning for knee MRI
-        </h2>
-        <p className={meta}>
-          Earlham College &amp; University of Pittsburgh
-          <br/>
-          With Debanjali Banerjee
-        </p>
-        <p className="mb-5">
-          Multitask learning for ACL and meniscus tear classification and
-          localization. I explored ResNet, CNN-LSTM, and transformer approaches using the MRNet
-          dataset.
         </p>
       </article>
     </section>

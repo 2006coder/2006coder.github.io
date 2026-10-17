@@ -54,8 +54,8 @@ export function LancePage() {
       <ul className="mb-5 list-disc space-y-4 pl-6">
         <li>
           <strong>Frozen ESM++ protein features.</strong> I cache residue embeddings
-          from the 600M-parameter ESM Cambrian model through ESM++. Each residue has
-          1,152 features, projected to 512 dimensions in the learned backbone.
+          from the <strong>600M-parameter ESM Cambrian model</strong> through ESM++. Each residue has
+          <strong> 1,152 features, projected to 512 dimensions</strong> in the learned backbone.
           The protein language model stays frozen, so training reuses its features
           without backpropagating through 600M parameters.
         </li>
@@ -68,8 +68,8 @@ export function LancePage() {
         </li>
         <li>
           <strong>Early molecule-conditioned cross-attention.</strong> Four query tokens
-          derived from the molecule attend to enzyme residues through eight attention
-          heads. A learned task gate controls how much this interaction changes the
+          derived from the molecule attend to enzyme residues through <strong>8 attention
+          heads</strong>. A learned task gate controls how much this interaction changes the
           global enzyme representation, before the kinetic prediction heads.
         </li>
       </ul>
@@ -77,7 +77,7 @@ export function LancePage() {
       <p className="mb-5">
         <strong>Joint-Embedding Predictive Architecture (JEPA)-style learning</strong>{" "}
         guides two latent routes with different roles.
-        Two shared 64-dimensional action vectors combine enzyme-interface and
+        Two shared <strong>64-dimensional action vectors</strong> combine enzyme-interface and
         molecule features. A shared residual adapter uses task embeddings to adjust
         the actions for each endpoint, then projects them to update separate binding
         and catalytic representations:
@@ -106,14 +106,24 @@ export function LancePage() {
       </p>
       <h2 className={heading}>Training the predictor</h2>
       <p className="mb-5">
-        The <strong>22.53M-parameter backbone</strong> is implemented in Python and
-        PyTorch, with CUDA BF16 mixed precision, AdamW, gradient clipping, and
-        task-balanced batches. That parameter count excludes the frozen 600M
-        protein feature extractor. Three heteroscedastic regression heads predict
-        a mean and log variance using beta-weighted Gaussian negative log likelihood.
+        The <strong>22.53M-parameter Python/PyTorch backbone</strong> uses
+        <strong> CUDA BF16 mixed precision</strong>. That parameter count excludes
+        the frozen 600M protein feature extractor. Three <strong>heteroscedastic
+        regression heads</strong> predict a mean and log variance using
+        <strong> beta-weighted Gaussian negative log likelihood</strong>.
         Temperature and pH enter with missing-value flags, so an absent measurement
         is distinguishable from zero.
       </p>
+      <ul className="mb-5 list-disc space-y-3 pl-6">
+        <li><strong>Task-balanced batches of 256:</strong> approximately 86 turnover,
+          85 Michaelis, and 85 inhibition examples per batch.</li>
+        <li><strong>AdamW and gradient clipping:</strong> a 3-epoch learning-rate
+          warm-up, up to 150 epochs, and early-stopping patience of 20.</li>
+        <li><strong>Two-stage fitting:</strong> train the shared backbone first, then
+          freeze it and fit the 406-parameter retriever for 20 epochs.</li>
+        <li><strong>10-member ensemble:</strong> reported predictions average
+          independently trained seed models, each sharing its encoders across all 3 tasks.</li>
+      </ul>
       <h2 className={heading}>A 406-parameter memory correction</h2>
       <p className="mb-5">
         LANCE-7R freezes the backbone and fits a small retrieval module. An eligible
@@ -124,9 +134,9 @@ export function LancePage() {
         prediction is preserved.
       </p>
       <p className="mb-5">
-        A learned diagonal metric ranks 64-dimensional protein keys by cosine
-        similarity, after excluding the query's target-specific 99% sequence cluster.
-        A temperature-weighted average of up to eight eligible labels and a bounded
+        A <strong>learned diagonal metric</strong> ranks 64-dimensional protein keys by cosine
+        similarity, after <strong>excluding the query's target-specific 99% sequence cluster</strong>.
+        A temperature-weighted average of <strong>up to 8 eligible labels</strong> and a bounded
         residual MLP form the correction. The residual also receives approximate
         different-reactant neighbor statistics: exact matching controls eligibility,
         but the correction is not based exclusively on exact-match neighbors.
@@ -203,7 +213,8 @@ export function LancePage() {
           study holds the <strong>architecture, parameter count, data protocol, and
           training schedule fixed</strong> while changing only the loss coefficients.
           Each condition uses two paired seeds and 150 epochs: <strong>12
-          backbone training runs</strong> in total.
+          backbone training runs</strong> in total, submitted through <strong>Slurm</strong>
+          {" "}on UMD's Zaratan HPC cluster.
         </p>
         <ol className="mb-5 list-decimal space-y-2 pl-6">
           <li><strong>Kinetic supervision only:</strong> the full architecture with auxiliary losses disabled.</li>

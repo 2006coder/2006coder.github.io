@@ -20,7 +20,7 @@ export function LibreChatPage() {
       </p>
       <p className="mb-5">
         <Link href="https://chat.cluster.earlham.edu">chat.cluster.earlham.edu</Link> is
-        an <strong>internal beta for Earlham students</strong>, requires Earlham SSO, and has about <strong>150 daily users</strong>. 
+        an <strong>internal beta for Earlham students</strong>, requires <strong>Earlham SSO</strong>, and has about <strong>150 daily users</strong>.
         Students are sharing it with each other and usage is growing gradually.
         A move to a domain such as chat.earlham.edu or
         ai.earlham.edu is expected when the platform is publicly
@@ -55,10 +55,10 @@ export function LibreChatPage() {
         also confirmed.
       </p>
       <p className="mb-5">
-        The system allows ten keys per user, with 300 requests per
-        minute and four concurrent requests per key. Secrets are shown once;
+        The system allows <strong>10 keys per user</strong>, with <strong>300 requests per
+        minute and 4 concurrent requests per key</strong>. Secrets are shown once;
         ownership records contain safe metadata instead of full keys. I added origin
-        checks, browser security headers, and server-side ownership enforcement.
+        checks, browser security headers, and <strong>server-side ownership enforcement</strong>.
       </p>
 
       <h2 className={heading}>Workspaces, files, and smaller patches</h2>
@@ -69,9 +69,9 @@ export function LibreChatPage() {
         HTML previews.
       </p>
       <p className="mb-5">
-        I isolated users with separate filesystem identities and restricted the runner with no
-        network, a read-only root filesystem, resource limits, and a
-        120-second command timeout. Workspaces have 15 GiB quotas, usage warnings, and
+        I isolated users with <strong>separate filesystem identities</strong> and restricted the runner with
+        <strong> no network, a read-only root filesystem, and resource limits</strong>, plus a
+        <strong> 120-second command timeout</strong>. Workspaces have <strong>15 GiB quotas</strong>, usage warnings, and
         24-hour cleanup. Existing PyTorch and TensorFlow
         environments are mounted read-only, and project scans exclude .env files.
       </p>
@@ -90,8 +90,8 @@ export function LibreChatPage() {
           anonymous and other-user access.
         </li>
         <li>
-          <strong>PDFs:</strong> added layout-aware extraction with anymd and
-          scanned-document OCR with Tesseract inside private workspaces, then removed
+          <strong>PDFs:</strong> added layout-aware extraction with <strong>anymd</strong> and
+          scanned-document <strong>OCR with Tesseract</strong> inside private workspaces, then removed
           the older parser patch.
         </li>
       </ul>
@@ -105,19 +105,20 @@ export function LibreChatPage() {
       </p>
       <ul className="mb-5 list-disc space-y-3 pl-5">
         <li>
-          <strong>Loading:</strong> staged GGUF models and vision projectors on each
+          <strong>Loading:</strong> staged <strong>GGUF models and vision projectors</strong> on each
           node's local disk, preloaded Gemma 4 26B at startup, and kept loaded models
           warm between requests.
         </li>
         <li>
-          <strong>Routing:</strong> ran separate servers on f4 and f5, each using two
-          A5000 GPUs. Requests are balanced across replicas and retried when a replica
+          <strong>Routing:</strong> ran separate inference servers on <strong>2 Linux nodes</strong>, f4 and f5,
+          using <strong>4 NVIDIA A5000 GPUs</strong> in total. <strong>Replica load balancing
+          and failover</strong> distribute requests and retry when a replica
           fails. Each node keeps one model loaded; the router waits for active requests
           to finish before unloading an idle model to make room.
         </li>
         <li>
-          <strong>Memory:</strong> kept model layers in VRAM. For the two 80B models, I
-          moved q8 context caches to RAM and used a 48%/52% GPU split to leave room for
+          <strong>Memory:</strong> kept model layers in <strong>VRAM</strong>. For the two <strong>80B models</strong>, I
+          moved <strong>q8 context caches to RAM</strong> and used a <strong>48%/52% GPU split</strong> to leave room for
           compute buffers. Larger models use one concurrent slot; others use two.
         </li>
         <li>
@@ -135,20 +136,20 @@ export function LibreChatPage() {
       <h2 className={heading}>Upgrades I can recover from</h2>
       <p className="mb-5">
         I upgraded LibreChat to 0.8.8-rc4 and removed obsolete compatibility patches.
-        After backing up MongoDB, I resolved a unique-message-index failure by removing{" "}
+        After backing up <strong>MongoDB</strong>, I resolved a unique-message-index failure by removing{" "}
         <strong>27 stale unfinished duplicates</strong> while preserving completed
         messages.
       </p>
       <p className="mb-5">
         I created a core backup covering databases, user files,
-        images, and deployment configuration, and tested database
-        recovery in isolated containers. In
+        images, and deployment configuration, and <strong>tested database
+        recovery in isolated containers</strong>. In
         September, I reduced the main runtime patch from{" "}
         <strong>688 to 582 lines</strong> at that stage and checked attachment behavior
         across <strong>3,712 cases</strong>.
       </p>
       <p className="mb-5">
-        I also maintain the $3 per-user daily online-model budget and pricing
+        I also maintain the <strong>$3 per-user daily online-model budget</strong> and pricing
         logic, configured a shared coding team with restrictions on
         expensive child models, and migrated four private agents to the newer
         permissions system. I replaced failing search with Firecrawl
