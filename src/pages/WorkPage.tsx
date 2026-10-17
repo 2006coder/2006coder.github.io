@@ -22,6 +22,11 @@ export function WorkPage() {
             | Not yet published
           </p>
           <p className="mb-5">
+            <strong className="bg-[#dce8cf] px-1 text-ink">Laboratory of Molecular and Thermodynamic Modeling</strong>
+            <br/>
+            at the <strong className="bg-highlight px-1 text-rust">University of Maryland</strong>
+          </p>
+          <p className="mb-5">
             I developed a <strong>22.53M-parameter Python/PyTorch backbone</strong> that
             combines frozen features from a <strong>600M-parameter ESM++ protein
             language model</strong> with <strong>RDKit molecular graphs and a D-MPNN</strong>
@@ -39,9 +44,7 @@ export function WorkPage() {
           <p className="mb-5">
             I began this work full-time in summer 2026 and continue this fall with
             <strong className="bg-highlight px-1 text-rust">Professor Jeffery B. Klauda</strong>{" "}
-            and <strong className="bg-highlight px-1 text-rust">PhD student Kinjal Mondal</strong>{" "}
-            in the <strong className="bg-[#dce8cf] px-1 text-ink">Laboratory of Molecular and Thermodynamic Modeling</strong>{" "}
-            at the <strong className="bg-highlight px-1 text-rust">University of Maryland</strong>.
+            and <strong className="bg-highlight px-1 text-rust">PhD student Kinjal Mondal</strong>.
           </p>
           <ul className="mb-6 list-disc space-y-4 pl-6">
             <li>Outperformed retrained{" "}
