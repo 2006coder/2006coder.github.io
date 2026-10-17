@@ -12,7 +12,7 @@ export function LancePage() {
       <p className={meta}>
         Bach Pham, Kinjal Mondal &amp; Jeffery B. Klauda
         <br/>
-        University of Maryland | Manuscript under mentor review | Not yet published
+        University of Maryland | Manuscript in revision | Not yet published
       </p>
       <p className="mb-5">
         Enzyme measurements are sparse and depend on experimental conditions. LANCE
@@ -20,6 +20,13 @@ export function LancePage() {
         <sub>cat</sub>, <i>K</i>
         <sub>m</sub>, and <i>K</i>
         <sub>i</sub> with one shared architecture and three prediction heads.
+      </p>
+      <p className="mb-5">
+        <strong>October 2026:</strong> Kinjal Mondal and Professor Jeffery B. Klauda
+        reviewed the manuscript and requested more ablation evidence. I prepared
+        the study package and sent it to Kinjal for execution. <strong>Results are
+        pending.</strong>{" "}
+        <Link href="#ablation-study">See the study design --&gt;</Link>
       </p>
       <h2 className={heading}>One model, three predictions</h2>
       <figure className="my-7">
@@ -112,6 +119,46 @@ export function LancePage() {
         cohorts; Km and Ki have no supplied OOD20 rows. Counts summarize metric directions
         across nested cohorts, not statistical significance.
       </p>
+      <section id="ablation-study">
+        <h2 className={heading}>Testing what drives the gains</h2>
+        <p className="mb-5">
+          A stronger complete model does not tell us which objectives help. My new
+          study holds the <strong>architecture, parameter count, data protocol, and
+          training schedule fixed</strong> while changing only the loss coefficients.
+          Each condition uses two paired seeds and 150 epochs: <strong>12 planned
+          backbone training runs</strong> in total.
+        </p>
+        <ol className="mb-5 list-decimal space-y-2 pl-6">
+          <li><strong>Kinetic supervision only:</strong> the full architecture with auxiliary losses disabled.</li>
+          <li><strong>Binding JEPA:</strong> kinetic supervision plus the binding objective family.</li>
+          <li><strong>Reaction JEPA:</strong> kinetic supervision plus the reaction objective family.</li>
+          <li><strong>Both JEPA branches:</strong> tests their combined contribution and interaction.</li>
+          <li><strong>Both branches + SIGReg:</strong> tests the representation regularizer.</li>
+          <li><strong>Full loss recipe:</strong> tests the remaining auxiliary objectives as a group.</li>
+        </ol>
+        <p className="mb-5">
+          I separated checkpoint selection, memory calibration, and final reporting
+          into <strong>three groups disjoint by pooled 99% sequence cluster</strong>.
+          Comparisons use the same report rows and paired seeds, with each kinetic
+          target reported separately. Released test and OOD labels are not loaded
+          by this study; the new report groups may still be sequence-similar to
+          training data.
+        </p>
+        <p className="mb-5">
+          The full-loss checkpoints also support <strong>three memory comparisons</strong>:
+          no memory, a simple exact-label average, and learned retrieval. These reuse
+          the same backbones, exclude neighbors in the query's target-specific 99%
+          sequence cluster, and preserve the other two kinetic outputs.
+        </p>
+        <p className="mb-5">
+          Local checks cover all six configurations, matching initial weights,
+          finite gradients, small end-to-end runs, retrieval exclusions, and Slurm
+          submission and resume behavior. These validate the implementation;
+          <strong> the full study has no results to report yet</strong>. Two seeds
+          provide an initial repeatability check. This study tests loss contributions,
+          not whether the learned representations are physical binding or catalytic states.
+        </p>
+      </section>
       <div className="my-7">
         <Link href="/#work">Back</Link>
       </div>
