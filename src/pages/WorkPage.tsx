@@ -33,7 +33,7 @@ export function WorkPage() {
             I began this work full-time in summer 2026 and continue this fall with
             <strong className="bg-highlight px-1 text-rust">Professor Jeffery B. Klauda</strong>{" "}
             and <strong className="bg-highlight px-1 text-rust">PhD student Kinjal Mondal</strong>{" "}
-            in the <strong className="bg-highlight px-1 text-rust">Laboratory of Molecular and Thermodynamic Modeling</strong>{" "}
+            in the <strong className="bg-[#dce8cf] px-1 text-ink">Laboratory of Molecular and Thermodynamic Modeling</strong>{" "}
             at the <strong className="bg-highlight px-1 text-rust">University of Maryland</strong>.
           </p>
           <ul className="mb-6 list-disc space-y-4 pl-6">

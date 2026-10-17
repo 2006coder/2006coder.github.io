@@ -15,7 +15,7 @@ export function LancePage() {
         With <strong className="bg-highlight px-1 text-rust">Professor Jeffery B. Klauda</strong>{" "}
         &amp; <strong className="bg-highlight px-1 text-rust">PhD student Kinjal Mondal</strong>
         <br/>
-        <strong className="bg-highlight px-1 text-rust">Laboratory of Molecular and Thermodynamic Modeling</strong>
+        <strong className="bg-[#dce8cf] px-1 text-ink">Laboratory of Molecular and Thermodynamic Modeling</strong>
         <br/>
         <strong className="bg-highlight px-1 text-rust">University of Maryland</strong> | Revising for journal submission | Not yet published
       </p>
