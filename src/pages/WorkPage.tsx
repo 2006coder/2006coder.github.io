@@ -16,9 +16,10 @@ export function WorkPage() {
           <h3 className="mb-4 text-[30px] font-bold leading-tight wrap-break-word sm:text-[38px]">
             <Link href="/lance">LANCE-7R: enzyme kinetics prediction</Link>
           </h3>
-          <p className={meta}>
+          <p className="mb-7 text-[22px] leading-relaxed sm:text-2xl">
             <strong className="bg-highlight px-1 text-rust">First author</strong>{" "}
-            | 2026 | Manuscript in revision | Not yet published
+            | 2026 | <strong className="bg-highlight px-1 text-rust">Manuscript in revision</strong>{" "}
+            | Not yet published
           </p>
           <p className="mb-5">
             I developed LANCE-7R to predict <strong>three enzyme kinetic parameters
@@ -29,8 +30,10 @@ export function WorkPage() {
           </p>
           <p className="mb-5">
             I began this work full-time in summer 2026 and continue this fall with
-            Kinjal Mondal and Professor Jeffery B. Klauda in the <strong>Laboratory
-            of Molecular and Thermodynamic Modeling</strong> at the University of Maryland.
+            <strong className="bg-highlight px-1 text-rust">Professor Jeffery B. Klauda</strong>{" "}
+            and <strong className="bg-highlight px-1 text-rust">PhD student Kinjal Mondal</strong>{" "}
+            in the <strong className="bg-highlight px-1 text-rust">Laboratory of Molecular and Thermodynamic Modeling</strong>{" "}
+            at the <strong className="bg-highlight px-1 text-rust">University of Maryland</strong>.
           </p>
           <ul className="mb-6 list-disc space-y-4 pl-6">
             <li>Outperformed retrained{" "}

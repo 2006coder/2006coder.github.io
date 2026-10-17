@@ -12,11 +12,12 @@ export function LancePage() {
       <p className={meta}>
         <strong className="bg-highlight px-1 text-rust">Bach Pham | First author</strong>
         <br/>
-        With Kinjal Mondal &amp; Jeffery B. Klauda
+        With <strong className="bg-highlight px-1 text-rust">Professor Jeffery B. Klauda</strong>{" "}
+        &amp; <strong className="bg-highlight px-1 text-rust">PhD student Kinjal Mondal</strong>
         <br/>
-        <strong>Laboratory of Molecular and Thermodynamic Modeling</strong>
+        <strong className="bg-highlight px-1 text-rust">Laboratory of Molecular and Thermodynamic Modeling</strong>
         <br/>
-        University of Maryland | Manuscript in revision | Not yet published
+        <strong className="bg-highlight px-1 text-rust">University of Maryland</strong> | Manuscript in revision | Not yet published
       </p>
       <p className="mb-5">
         Enzyme measurements are sparse and depend on experimental conditions. LANCE
@@ -26,7 +27,9 @@ export function LancePage() {
         <sub>i</sub> with one shared architecture and three prediction heads.
       </p>
       <p className="mb-5">
-        <strong>October 2026:</strong> Kinjal Mondal and Professor Jeffery B. Klauda
+        <strong>October 2026:</strong>{" "}
+        <strong className="bg-highlight px-1 text-rust">Professor Jeffery B. Klauda</strong>{" "}
+        and <strong className="bg-highlight px-1 text-rust">PhD student Kinjal Mondal</strong>{" "}
         reviewed the manuscript and requested more ablation evidence. I am currently
         running <strong>12 controlled ablation experiments on UMD's Zaratan HPC
         cluster</strong> under engineer-bio. <strong>Results are pending.</strong>{" "}
