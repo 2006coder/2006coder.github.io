@@ -13,7 +13,8 @@ export function HomePage() {
         Physics minor, Math minor<br/>
         Earlham College | Class of 2028
       </p>
-      <Link href="/#education" className="mt-6">Explore my background --&gt;</Link>
+      <Link href="/bach-pham-resume.pdf" newTab className="mt-6 py-2 font-bold">View my resume (PDF)</Link>
+      <Link href="/#education" className="py-2 text-base sm:text-lg">or scroll down to explore</Link>
     </section>
     <section id="education" className="pb-8">
       <h2 className={title}>Education</h2>
