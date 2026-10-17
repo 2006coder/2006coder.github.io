@@ -29,7 +29,8 @@ export function WorkPage() {
           </p>
           <p className="mb-5">
             I began this work full-time in summer 2026 and continue this fall with
-            Kinjal Mondal and Professor Jeffery B. Klauda at the University of Maryland.
+            Kinjal Mondal and Professor Jeffery B. Klauda in the <strong>Laboratory
+            of Molecular and Thermodynamic Modeling</strong> at the University of Maryland.
           </p>
           <ul className="mb-6 list-disc space-y-4 pl-6">
             <li>Outperformed retrained{" "}

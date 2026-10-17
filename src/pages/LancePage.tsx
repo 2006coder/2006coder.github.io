@@ -14,6 +14,8 @@ export function LancePage() {
         <br/>
         With Kinjal Mondal &amp; Jeffery B. Klauda
         <br/>
+        <strong>Laboratory of Molecular and Thermodynamic Modeling</strong>
+        <br/>
         University of Maryland | Manuscript in revision | Not yet published
       </p>
       <p className="mb-5">
