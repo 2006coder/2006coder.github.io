@@ -226,7 +226,8 @@ export function WorkPage() {
         <p className={meta}>
           Perception and Robotics Group, UMD | Summer 2025
           <br/>
-          With Yiannis Aloimonos and Pavan Mantripragada
+          With <strong className="bg-highlight px-1 text-rust">Professor Yiannis Aloimonos</strong>{" "}
+          and <strong className="bg-highlight px-1 text-rust">Pavan Mantripragada</strong>
         </p>
         <p className="mb-5">
           My work at UMD took me from pixel-level matrix operations to 3D reconstruction,
