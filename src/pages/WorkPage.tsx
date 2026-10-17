@@ -22,12 +22,18 @@ export function WorkPage() {
             | Not yet published
           </p>
           <p className="mb-5">
-            I developed LANCE-7R to predict <strong>three enzyme kinetic parameters
-            with one shared model</strong>. It combines early molecule-conditioned
-            cross-attention, <strong>two JEPA-style objectives for binding and reaction</strong>,
-            contrastive losses, SIGReg-style regularization, and a <strong>406-parameter
-            selective label-memory module</strong>.
-            <strong> No reaction products are needed at inference.</strong>
+            I developed a <strong>22.53M-parameter PyTorch backbone</strong> that combines
+            frozen <strong>ESM++ protein language model features</strong> with RDKit
+            molecular graphs encoded by a directed message-passing neural network
+            (D-MPNN). One shared architecture predicts turnover, Michaelis, and
+            inhibition constants.
+          </p>
+          <p className="mb-5">
+            Molecule-conditioned cross-attention and shared latent actions connect
+            <strong> two JEPA-style objectives for binding and reaction</strong>, with
+            contrastive losses and SIGReg-style regularization. A <strong>406-parameter
+            label-memory module</strong> selectively corrects turnover predictions.
+            <strong> No reaction products are required at inference.</strong>
           </p>
           <p className="mb-5">
             I began this work full-time in summer 2026 and continue this fall with
