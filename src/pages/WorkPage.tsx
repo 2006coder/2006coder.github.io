@@ -18,14 +18,15 @@ export function WorkPage() {
           </h3>
           <p className="mb-7 text-[22px] leading-relaxed sm:text-2xl">
             <strong className="bg-highlight px-1 text-rust">First author</strong>{" "}
-            | 2026 | <strong className="bg-highlight px-1 text-rust">Manuscript in revision</strong>{" "}
+            | 2026 | <strong className="bg-highlight px-1 text-rust">Revising for journal submission</strong>{" "}
             | Not yet published
           </p>
           <p className="mb-5">
             I developed LANCE-7R to predict <strong>three enzyme kinetic parameters
             with one shared model</strong>. It combines early molecule-conditioned
             cross-attention, <strong>two JEPA-style objectives for binding and reaction</strong>,
-            contrastive losses, SIGReg-style regularization, and selective label memory.
+            contrastive losses, SIGReg-style regularization, and a <strong>406-parameter
+            selective label-memory module</strong>.
             <strong> No reaction products are needed at inference.</strong>
           </p>
           <p className="mb-5">
@@ -45,8 +46,13 @@ export function WorkPage() {
               across all supplied cohorts.</li>
             <li>Turnover OOD99 <strong>R^2: 0.395 vs. CatPred's 0.323</strong>{" "}
               on the same 348 rows.</li>
+            <li><strong>Drug-discovery relevance:</strong> predicting enzyme inhibition
+              constants connects this work to inhibitor evaluation. On <strong>1,193
+              held-out inhibition measurements</strong>, LANCE reduces log10 MAE from
+              0.865 to 0.788, an <strong className="bg-highlight px-1 text-rust">8.9% reduction</strong>{" "}
+              versus retrained CatPred.</li>
             <li><strong>Currently running 12 controlled ablation experiments</strong>{" "}
-              on <strong>UMD's Zaratan HPC cluster</strong> under engineer-bio following
+              on <strong>UMD's Zaratan HPC cluster</strong> under energybio-eng following
               mentor feedback. Six loss configurations and two paired seeds test which
               objectives contribute to the gains. <strong>Results are pending.</strong></li>
           </ul>

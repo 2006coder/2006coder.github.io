@@ -17,7 +17,7 @@ export function LancePage() {
         <br/>
         <strong className="bg-highlight px-1 text-rust">Laboratory of Molecular and Thermodynamic Modeling</strong>
         <br/>
-        <strong className="bg-highlight px-1 text-rust">University of Maryland</strong> | Manuscript in revision | Not yet published
+        <strong className="bg-highlight px-1 text-rust">University of Maryland</strong> | Revising for journal submission | Not yet published
       </p>
       <p className="mb-5">
         Enzyme measurements are sparse and depend on experimental conditions. LANCE
@@ -32,7 +32,7 @@ export function LancePage() {
         and <strong className="bg-highlight px-1 text-rust">PhD student Kinjal Mondal</strong>{" "}
         reviewed the manuscript and requested more ablation evidence. I am currently
         running <strong>12 controlled ablation experiments on UMD's Zaratan HPC
-        cluster</strong> under engineer-bio. <strong>Results are pending.</strong>{" "}
+        cluster</strong> under energybio-eng. <strong>Results are pending.</strong>{" "}
         <Link href="#ablation-study">See the study design --&gt;</Link>
       </p>
       <h2 className={heading}>One model, three predictions</h2>
@@ -123,6 +123,20 @@ export function LancePage() {
         inhibition measurements, MAE falls from <strong>0.865 to 0.788</strong>.
         These results measure the complete system; they do not establish how much of the
         gain comes from either JEPA objective alone.
+      </p>
+      <h2 className={heading}>Connecting molecular prediction to drug discovery</h2>
+      <p className="mb-5">
+        <strong>Inhibition constants connect enzyme modeling to inhibitor evaluation.</strong>{" "}
+        LANCE predicts <i>K</i><sub>i</sub> alongside turnover and substrate kinetics
+        from enzyme and molecular features. This makes the work relevant to the
+        computational characterization of enzyme inhibitors in drug discovery.
+      </p>
+      <p className="mb-5">
+        On <strong>1,193 held-out inhibition measurements</strong>, the complete
+        system reduces log10 MAE by <strong className="bg-highlight px-1 text-rust">8.9%</strong>{" "}
+        relative to retrained CatPred, from 0.865 to 0.788, and raises R^2 from
+        <strong> 0.633 to 0.674</strong>. These are benchmark prediction results;
+        prospective compound screening and experimental validation remain future work.
       </p>
       <ResultsTable />
       <p className={meta}>
