@@ -10,7 +10,9 @@ export function LancePage() {
       <Link href="/#work">Back</Link>
       <h1 className={title}>LANCE: learning enzyme kinetics</h1>
       <p className={meta}>
-        Bach Pham, Kinjal Mondal &amp; Jeffery B. Klauda
+        <strong className="bg-highlight px-1 text-rust">Bach Pham | First author</strong>
+        <br/>
+        With Kinjal Mondal &amp; Jeffery B. Klauda
         <br/>
         University of Maryland | Manuscript in revision | Not yet published
       </p>
@@ -23,9 +25,9 @@ export function LancePage() {
       </p>
       <p className="mb-5">
         <strong>October 2026:</strong> Kinjal Mondal and Professor Jeffery B. Klauda
-        reviewed the manuscript and requested more ablation evidence. I prepared
-        the study package and sent it to Kinjal for execution. <strong>Results are
-        pending.</strong>{" "}
+        reviewed the manuscript and requested more ablation evidence. I am currently
+        running <strong>12 controlled ablation experiments on UMD's Zaratan HPC
+        cluster</strong> under engineer-bio. <strong>Results are pending.</strong>{" "}
         <Link href="#ablation-study">See the study design --&gt;</Link>
       </p>
       <h2 className={heading}>One model, three predictions</h2>
@@ -43,7 +45,7 @@ export function LancePage() {
           it full size.
         </figcaption>
       </figure>
-      <h2 className={heading}>The core idea of my architecture is to implement the JEPA-style objectives.</h2>
+      <h2 className={heading}>Two JEPA objectives, shared latent actions</h2>
       <p className="mb-5">
         <strong>Joint-Embedding Predictive Architecture (JEPA)-style learning</strong>{" "}
         guides two latent routes with different roles.
@@ -63,6 +65,13 @@ export function LancePage() {
           route toward a representation combining the molecule and enzyme interface.
         </li>
       </ul>
+      <p className="mb-5">
+        I combine these two JEPA-style objectives with <strong>contrastive losses</strong>{" "}
+        that align paired representations and <strong>SIGReg-style regularization</strong>{" "}
+        that discourages representation collapse. Together with early
+        molecule-conditioned cross-attention and task-adapted latent actions, these
+        form the shared learning system for all three kinetic parameters.
+      </p>
       <p className="mb-5">
         <strong>Products are not required at inference.</strong> LANCE-7R also adds a
         second stage with just <strong>406 fitted parameters</strong>. It retrieves
@@ -125,7 +134,7 @@ export function LancePage() {
           A stronger complete model does not tell us which objectives help. My new
           study holds the <strong>architecture, parameter count, data protocol, and
           training schedule fixed</strong> while changing only the loss coefficients.
-          Each condition uses two paired seeds and 150 epochs: <strong>12 planned
+          Each condition uses two paired seeds and 150 epochs: <strong>12
           backbone training runs</strong> in total.
         </p>
         <ol className="mb-5 list-decimal space-y-2 pl-6">

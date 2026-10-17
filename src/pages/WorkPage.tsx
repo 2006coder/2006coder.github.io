@@ -16,27 +16,35 @@ export function WorkPage() {
           <h3 className="mb-4 text-[30px] font-bold leading-tight wrap-break-word sm:text-[38px]">
             <Link href="/lance">LANCE-7R: enzyme kinetics prediction</Link>
           </h3>
-          <p className={meta}>2026 | Manuscript in revision | Ablation results pending | Not yet published</p>
+          <p className={meta}>
+            <strong className="bg-highlight px-1 text-rust">First author</strong>{" "}
+            | 2026 | Manuscript in revision | Not yet published
+          </p>
           <p className="mb-5">
-            I designed a shared architecture that predicts <strong>three enzyme kinetic
-            parameters</strong>, combining two JEPA-style learning routes with selective
-            label memory. No reaction products are needed at inference.
-            This work began with full-time research in summer 2026 and continues this fall
-            with Kinjal Mondal and Professor Jeffery B. Klauda at the University of Maryland.
+            I developed LANCE-7R to predict <strong>three enzyme kinetic parameters
+            with one shared model</strong>. It combines early molecule-conditioned
+            cross-attention, <strong>two JEPA-style objectives for binding and reaction</strong>,
+            contrastive losses, SIGReg-style regularization, and selective label memory.
+            <strong> No reaction products are needed at inference.</strong>
+          </p>
+          <p className="mb-5">
+            I began this work full-time in summer 2026 and continue this fall with
+            Kinjal Mondal and Professor Jeffery B. Klauda at the University of Maryland.
           </p>
           <ul className="mb-6 list-disc space-y-4 pl-6">
-            <li><strong className="bg-highlight px-1 text-rust">18 of 18</strong>{" "}
-              favorable Heldout/OOD99 metric point estimates against retrained{" "}
+            <li>Outperformed retrained{" "}
               <Link newTab href="https://www.nature.com/articles/s41467-025-57215-9">CatPred</Link>,
-              a model published in <strong>Nature Communications (2025)</strong>;
+              published in <strong>Nature Communications (2025)</strong>, in{" "}
+              <strong className="bg-highlight px-1 text-rust">18 of 18</strong>{" "}
+              Heldout/OOD99 metric point estimates and{" "}
               <strong className="bg-highlight px-1 text-rust"> 41 of 48</strong>{" "}
               across all supplied cohorts.</li>
             <li>Turnover OOD99 <strong>R^2: 0.395 vs. CatPred's 0.323</strong>{" "}
               on the same 348 rows.</li>
-            <li><strong>Now in revision:</strong> following mentor feedback, I prepared
-              a controlled <strong>six-condition, two-seed ablation study</strong> and sent
-              it to Kinjal to run. The 12 planned training runs will test which learning
-              objectives contribute to the results.</li>
+            <li><strong>Currently running 12 controlled ablation experiments</strong>{" "}
+              on <strong>UMD's Zaratan HPC cluster</strong> under engineer-bio following
+              mentor feedback. Six loss configurations and two paired seeds test which
+              objectives contribute to the gains. <strong>Results are pending.</strong></li>
           </ul>
           <p>
             <Link href="/lance">More in-depth details</Link>
