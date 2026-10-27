@@ -165,14 +165,129 @@ export function SfmPage() {
         <Equation>{String.raw`\mathbf{x}_i = [x_i, y_i, 1]^T`}</Equation>, and a
         point in image 2,{" "}
         <Equation>{String.raw`\mathbf{x}'_i = [x'_i, y'_i, 1]^T`}</Equation>, is
-        given by the <strong>Longuet-Higgins equation</strong>:
+        given by the <strong>epipolar constraint</strong>:
       </p>
       <Equation
         display
       >{String.raw`\mathbf{x}'^T_i F \mathbf{x}_i = 0`}</Equation>
+      <p>
+        This is the coplanarity constraint from earlier, now written in image
+        coordinates. To see where it comes from, we need to account for the
+        rotation and translation between the two cameras. For this derivation,
+        we drop the subscript <Equation>{String.raw`i`}</Equation> and follow one matched point.
+      </p>
+      <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">1. Put the rays in the same coordinate frame</h3>
+      <p>
+        Pixel coordinates depend on the camera's focal lengths and principal point.
+        The intrinsic matrices <Equation>{String.raw`K`}</Equation> and{" "}
+        <Equation>{String.raw`K'`}</Equation> describe that conversion. Applying
+        their inverses gives normalized image coordinates, which describe ray
+        directions in each camera's own frame. These are not necessarily unit vectors:
+      </p>
+      <Equation display>{String.raw`\begin{aligned}
+\hat{\bx} &= K^{-1}\bx \\
+\hat{\bx}' &= K'^{-1}\bx'
+\end{aligned}`}</Equation>
+      <p>
+        Let <Equation>{String.raw`R`}</Equation> rotate coordinates from camera 1's
+        axes into camera 2's axes, and let <Equation>{String.raw`\mathbf{t}`}</Equation>{" "}
+        be the translation in camera 2's frame. The same physical point has
+        coordinates <Equation>{String.raw`\bX`}</Equation> in the first frame and{" "}
+        <Equation>{String.raw`\bX'`}</Equation> in the second:
+      </p>
+      <Equation display>{String.raw`\bX' = R\bX + \mathbf{t}`}</Equation>
+      <p>
+        Each image gives a direction but loses the depth. Write those unknown
+        depth scales as <Equation>{String.raw`\lambda`}</Equation> and{" "}
+        <Equation>{String.raw`\lambda'`}</Equation>. Substituting the rays into
+        the camera transform gives:
+      </p>
+      <Equation display>{String.raw`\begin{gathered}
+\bX = \lambda\hat{\bx}, \qquad \bX' = \lambda'\hat{\bx}' \\
+\lambda'\hat{\bx}' = \lambda R\hat{\bx} + \mathbf{t}
+\end{gathered}`}</Equation>
+      <p>
+        The last equation says that the second ray lies in the plane spanned by
+        the rotated first ray and the translation. Their cross product is
+        perpendicular to that plane, so its dot product with the second ray is zero:
+      </p>
+      <Equation display>{String.raw`\hat{\bx}'^T\bigl(\mathbf{t} \times R\hat{\bx}\bigr) = 0`}</Equation>
+      <details className="my-8">
+        <summary className="cursor-pointer font-bold">How does the translation relate to the camera centers?</summary>
+        <p className="mt-4">
+          With this convention, camera 1's center is at the origin of frame 1,
+          so its position in frame 2 is <Equation>{String.raw`\mathbf{t}`}</Equation>.
+          Camera 2's center has position <Equation>{String.raw`-R^T\mathbf{t}`}</Equation>{" "}
+          in frame 1. Thus the baseline from camera 1 to camera 2 is
+          <Equation>{String.raw`\,-R^T\mathbf{t}`}</Equation> in frame 1, or{" "}
+          <Equation>{String.raw`-\mathbf{t}`}</Equation> in frame 2.
+        </p>
+        <p>
+          Reversing a vector or exchanging two vectors in a scalar triple product
+          changes its sign. It does not change whether the result is zero.
+          That is why this equation expresses the same coplanarity condition
+          as the earlier equation using the camera centers.
+        </p>
+      </details>
+      <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">2. Write the cross product as a matrix</h3>
+      <p>
+        The cross-product symbol is an operation, not the image point{" "}
+        <Equation>{String.raw`\bx`}</Equation>. For any vector{" "}
+        <Equation>{String.raw`\mathbf{v}`}</Equation>, crossing with a fixed
+        translation is equivalent to multiplying by this matrix:
+      </p>
+      <Equation display>{String.raw`\begin{gathered}
+[\mathbf{t}]_\times =
+\begin{bmatrix}
+0 & -t_3 & t_2 \\
+t_3 & 0 & -t_1 \\
+-t_2 & t_1 & 0
+\end{bmatrix} \\
+\mathbf{t} \times \mathbf{v} = [\mathbf{t}]_\times\mathbf{v}
+\end{gathered}`}</Equation>
+      <p>
+        Substitute this into the coplanarity equation. The rotation and translation
+        combine into the <strong>essential matrix</strong>:
+      </p>
+      <Equation display>{String.raw`\begin{gathered}
+\hat{\bx}'^T[\mathbf{t}]_\times R\hat{\bx} = 0 \\
+E = [\mathbf{t}]_\times R, \qquad \hat{\bx}'^T E\hat{\bx} = 0
+\end{gathered}`}</Equation>
+      <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">3. Return to pixel coordinates</h3>
+      <p>
+        Our matched points are measured in pixels. Substitute the normalized
+        coordinates from step 1, remembering that transposing a product reverses
+        its order:
+      </p>
+      <Equation display>{String.raw`\begin{gathered}
+(K'^{-1}\bx')^T E(K^{-1}\bx) = 0 \\
+\bx'^T K'^{-T} E K^{-1}\bx = 0 \\
+F = K'^{-T}[\mathbf{t}]_\times R K^{-1} \\
+\bx'^T F\bx = 0
+\end{gathered}`}</Equation>
+      <p>
+        Here <Equation>{String.raw`K'^{-T} = (K'^{-1})^T`}</Equation>.
+        The fundamental matrix combines the cameras' internal calibration with
+        their relative motion. The geometry has not changed: two viewing rays
+        and the baseline must still lie in one plane.
+      </p>
+      <p>
+        This also connects to the epipolar line introduced above. Multiplying
+        by <Equation>{String.raw`F`}</Equation> gives the line's three coefficients,
+        and the matching point must satisfy its equation:
+      </p>
+      <Equation display>{String.raw`\begin{gathered}
+\mathbf{l}' = F\bx = \begin{bmatrix} a \\ b \\ c \end{bmatrix} \\
+\bx'^T\mathbf{l}' = ax' + by' + c = 0
+\end{gathered}`}</Equation>
+      <p>
+        We used camera motion to explain the form of <Equation>{String.raw`F`}</Equation>.
+        We do not need to know that motion or the intrinsic matrices to estimate
+        <Equation>{String.raw`\,F`}</Equation> from point matches. That is the next step.
+      </p>
       <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">
         Deriving the System of Equations (
-        <Equation>{String.raw`Ax=0`}</Equation>)
+        <Equation>{String.raw`A\mathbf{f}=0`}</Equation>)
       </h3>
       <p>
         To find <Equation>{String.raw`F`}</Equation>, we need to solve for its 9
@@ -184,13 +299,72 @@ export function SfmPage() {
 \begin{bmatrix} f_{11} & f_{12} & f_{13} \\ f_{21} & f_{22} & f_{23} \\ f_{31} & f_{32} & f_{33} \end{bmatrix} 
 \begin{bmatrix} x_i \\ y_i \\ 1 \end{bmatrix} = 0`}</Equation>
       <p>
-        Expanding this multiplication results in a scalar equation. Grouping the
-        terms to isolate the coefficients of{" "}
-        <Equation>{String.raw`F`}</Equation>, we obtain:
+        First multiply the matrix by the column. Each row multiplies the column
+        entry by entry, then adds the three products:
+      </p>
+      <Equation display>{String.raw`F\bx_i =
+\begin{bmatrix}
+f_{11}x_i + f_{12}y_i + f_{13} \\
+f_{21}x_i + f_{22}y_i + f_{23} \\
+f_{31}x_i + f_{32}y_i + f_{33}
+\end{bmatrix}`}</Equation>
+      <p>
+        Now multiply by the row on the left. The first entry gets multiplied by
+        <Equation>{String.raw`\,x'_i`}</Equation>, the second by{" "}
+        <Equation>{String.raw`y'_i`}</Equation>, and the third by 1:
+      </p>
+      <Equation display>{String.raw`\begin{aligned}
+x'_i(f_{11}x_i + f_{12}y_i + f_{13}) \\
+{}+ y'_i(f_{21}x_i + f_{22}y_i + f_{23}) \\
+{}+ (f_{31}x_i + f_{32}y_i + f_{33}) &= 0
+\end{aligned}`}</Equation>
+      <p>
+        Distribute those multipliers to get nine terms, one for each entry of
+        <Equation>{String.raw`\,F`}</Equation>. We order the unknowns column by column:
+        <Equation>{String.raw`\,f_{11}, f_{21}, f_{31}`}</Equation> first, then the
+        second column, then the third. Reordering a sum does not change its value:
       </p>
       <Equation
         display
-      >{String.raw`x_i x'_i f_{11} + x_i y'_i f_{21} + x_i f_{31} + y_i x'_i f_{12} + y_i y'_i f_{22} + y_i f_{32} + x'_i f_{13} + y'_i f_{23} + f_{33} = 0`}</Equation>
+      >{String.raw`\begin{aligned}
+x_i x'_i f_{11} + x_i y'_i f_{21} + x_i f_{31} \\
+{}+ y_i x'_i f_{12} + y_i y'_i f_{22} + y_i f_{32} \\
+{}+ x'_i f_{13} + y'_i f_{23} + f_{33} &= 0
+\end{aligned}`}</Equation>
+      <p>
+        The image coordinates are known; the nine entries of{" "}
+        <Equation>{String.raw`F`}</Equation> are unknown. Collecting their
+        coefficients gives one row of <Equation>{String.raw`A`}</Equation>:
+      </p>
+      <Equation display>{String.raw`\mathbf{a}_i^T =
+\begin{bmatrix} x_i x'_i & x_i y'_i & x_i & y_i x'_i & y_i y'_i & y_i & x'_i & y'_i & 1 \end{bmatrix}`}</Equation>
+      <details className="my-8">
+        <summary className="cursor-pointer font-bold">Check the multiplication with numbers</summary>
+        <p className="mt-4">
+          Take the following matrix and points. This is an arithmetic check;
+          the points were not chosen to satisfy the epipolar constraint.
+        </p>
+        <Equation display>{String.raw`\begin{gathered}
+F = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix} \\
+\bx = \begin{bmatrix} 2 \\ 3 \\ 1 \end{bmatrix}, \qquad
+\bx' = \begin{bmatrix} 5 \\ 7 \\ 1 \end{bmatrix}
+\end{gathered}`}</Equation>
+        <p>Multiplying the matrix and vectors gives:</p>
+        <Equation display>{String.raw`\begin{gathered}
+F\bx = \begin{bmatrix} 11 \\ 29 \\ 47 \end{bmatrix} \\
+\bx'^T F\bx = 5(11) + 7(29) + 47 = 305
+\end{gathered}`}</Equation>
+        <p>Using the nine terms in column order gives the same result:</p>
+        <Equation display>{String.raw`\begin{aligned}
+&10 + 56 + 14 \\
+&{}+ 30 + 105 + 24 \\
+&{}+ 15 + 42 + 9 = 305
+\end{aligned}`}</Equation>
+        <p>
+          The two calculations agree. The nonzero result means this point pair
+          does not satisfy this matrix's epipolar constraint.
+        </p>
+      </details>
       <p>
         If we have <Equation>{String.raw`m`}</Equation> correspondences (where{" "}
         <Equation>{String.raw`m \geq 8`}</Equation>
@@ -211,9 +385,17 @@ x_m x'_m & x_m y'_m & x_m & y_m x'_m & y_m y'_m & y_m & x'_m & y'_m & 1
         <Equation>{String.raw`A\mathbf{f} = 0`}</Equation>.
       </p>
       <p>
-        Since real-world data has noise,{" "}
-        <Equation>{String.raw`A\mathbf{f}`}</Equation> will never be exactly
-        zero. We instead try to find the{" "}
+        Multiplying every entry of <Equation>{String.raw`F`}</Equation> by the same
+        nonzero scale leaves the constraint unchanged. Its nine entries therefore
+        have eight independent parameters before enforcing rank 2. The linear
+        eight-point method needs at least eight independent equations from
+        matches in a nondegenerate configuration.
+      </p>
+      <p>
+        With exactly eight independent rows, the eight-by-nine matrix{" "}
+        <Equation>{String.raw`A`}</Equation> has a nonzero null vector even when
+        the image coordinates contain noise. With more noisy correspondences,
+        an exact nonzero solution generally does not exist. We then find the{" "}
         <Equation>{String.raw`\mathbf{f}`}</Equation> that makes the result as
         close to zero as possible. We also fix the length of{" "}
         <Equation>{String.raw`\mathbf{f}`}</Equation> to 1 so the solution isn't
@@ -223,6 +405,17 @@ x_m x'_m & x_m y'_m & x_m & y_m x'_m & y_m y'_m & y_m & x'_m & y'_m & 1
         display
       >{String.raw`\min \| A\mathbf{f} \| \quad \text{subject to} \quad \| \mathbf{f} \| = 1`}</Equation>
       <h2 className={heading}>Mathematical Proof: Solving via SVD</h2>
+      <p>
+        The proof below uses <Equation>{String.raw`\mathbf{x}`}</Equation> for a
+        generic unknown vector. In our application, that vector is{" "}
+        <Equation>{String.raw`\mathbf{f}`}</Equation>, the nine entries of{" "}
+        <Equation>{String.raw`F`}</Equation>, not an image point. The last column
+        of the full <Equation>{String.raw`9 \times 9`}</Equation> matrix{" "}
+        <Equation>{String.raw`V`}</Equation> gives the required direction. With
+        exactly eight rows, we can append a zero row to{" "}
+        <Equation>{String.raw`A`}</Equation> for the proof. This leaves the error
+        norm unchanged and makes the ninth, zero singular value explicit.
+      </p>
       <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">Understand SVD geometrically</h3>
       <p>
         We have already known that{" "}
@@ -249,7 +442,9 @@ x_m x'_m & x_m y'_m & x_m & y_m x'_m & y_m y'_m & y_m & x'_m & y'_m & 1
           stretches the vector along the coordinate axes. The amount of
           stretching is determined by the singular values{" "}
           <Equation>{String.raw`\sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_n \geq 0`}</Equation>
-          .
+          . When there are more rows than columns, any extra zero rows of{" "}
+          <Equation>{String.raw`\Sigma`}</Equation> are omitted from the stretching
+          diagram below.
         </li>
         <li>
           <strong>
@@ -393,14 +588,30 @@ x_m x'_m & x_m y'_m & x_m & y_m x'_m & y_m y'_m & y_m & x'_m & y'_m & 1
       </p>
       <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">The Rank 2 Constraint</h3>
       <p>
-        In our geometric setup, the Fundamental Matrix maps a point to a line.
-        For this to work mathematically, the determinant of{" "}
-        <Equation>{String.raw`F`}</Equation> must be zero. In Linear Algebra
-        terms, <Equation>{String.raw`F`}</Equation> must be Rank 2.
+        Return to the formula we derived from rotation and translation:
+      </p>
+      <Equation display>{String.raw`F = K'^{-T}[\mathbf{t}]_\times R K^{-1}`}</Equation>
+      <p>
+        For nonzero translation, crossing a vector parallel to{" "}
+        <Equation>{String.raw`\mathbf{t}`}</Equation> with{" "}
+        <Equation>{String.raw`\mathbf{t}`}</Equation> gives zero. No other
+        direction maps to zero, so the cross-product matrix loses exactly one
+        dimension and has rank 2. The rotation and intrinsic matrices are
+        invertible, so multiplying by them preserves that rank:
+      </p>
+      <Equation display>{String.raw`\begin{gathered}
+[\mathbf{t}]_\times\mathbf{t} = \mathbf{0} \\
+\operatorname{rank}(F) = \operatorname{rank}([\mathbf{t}]_\times) = 2
+\end{gathered}`}</Equation>
+      <p>
+        This is why one singular value must be zero. It comes from the camera
+        geometry, not an arbitrary adjustment to the matrix. Pure rotation,
+        with zero translation, is a degenerate case: there is no baseline to
+        recover depth from parallax.
       </p>
       <p>
         However, because our input images have noise (pixels aren't perfect),
-        the <Equation>{String.raw`F`}</Equation> we calculated in Section 4 will
+        the <Equation>{String.raw`F`}</Equation> we estimated from the point matches will
         likely be Rank 3 (Full Rank). It will satisfy the algebraic least squares, but it won't
         satisfy the strict geometry (the epipolar lines won't intersect
         perfectly at one point).
@@ -440,6 +651,14 @@ x_m x'_m & x_m y'_m & x_m & y_m x'_m & y_m y'_m & y_m & x'_m & y'_m & 1
         </li>
       </ol>
       <p>
+        This is our second use of SVD. The first finds the nine entries that best
+        fit the linear equations. The second enforces the rank required by the
+        camera geometry. If the cameras are calibrated, we can use the earlier
+        relation with the corrected matrix <Equation>{String.raw`F'`}</Equation>{" "}
+        to estimate the essential matrix:
+      </p>
+      <Equation display>{String.raw`\widehat E = K'^T F' K`}</Equation>
+      <p>
         This result, <Equation>{String.raw`F'`}</Equation>, is the Fundamental
         Matrix used in Structure from Motion. Of course this is just the very basic idea.
         We then need to use RANSAC again for outlier rejection to find best F, then estimate the
@@ -462,6 +681,14 @@ x_m x'_m & x_m y'_m & x_m & y_m x'_m & y_m y'_m & y_m & x'_m & y'_m & 1
         <em>CMSC733 Project 3: Build your own SfM!</em> Retrieved from{" "}
         <Link className="break-all" href="https://cmsc733.github.io/2022/proj/p3/">
           https://cmsc733.github.io/2022/proj/p3/
+        </Link>
+      </p>
+      <p>
+        [2] Richard Hartley and Andrew Zisserman. <em>Multiple View Geometry in
+        Computer Vision</em>, second edition. Chapter 9: Epipolar Geometry and the
+        Fundamental Matrix.{" "}
+        <Link href="https://www.robots.ox.ac.uk/~vgg/hzbook/hzbook2/HZepipolar.pdf">
+          Read the chapter
         </Link>
       </p>
       <div className="my-7">
