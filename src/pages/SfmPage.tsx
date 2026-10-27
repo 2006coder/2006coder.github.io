@@ -191,16 +191,27 @@ export function SfmPage() {
       <p>
         The camera's intrinsic matrix <Equation>{String.raw`K`}</Equation> describes
         how its focal lengths and principal point convert a ray direction into
-        pixel coordinates. Its inverse undoes that conversion:
+        pixel coordinates. Its inverse converts a pixel point back into the
+        direction of its viewing ray. In each camera's own coordinate frame:
       </p>
       <Equation display>{String.raw`\begin{aligned}
-\hat{\bx} &= K^{-1}\bx \\
-\hat{\bx}' &= K'^{-1}\bx'
+\hat{\bx} &= K^{-1}\bx \parallel \overrightarrow{\bC\bx} \\
+\hat{\bx}' &= K'^{-1}\bx' \parallel \overrightarrow{\bC'\bx'}
 \end{aligned}`}</Equation>
       <p>
-        The hats mean we have converted the pixels into ray directions. Each
-        direction is still written using its own camera's axes. These are called
-        normalized image coordinates; they do not have to be unit-length vectors.
+        So <Equation>{String.raw`\hat{\bx}`}</Equation> gives the direction of
+        the arrow from <Equation>{String.raw`\bC`}</Equation> through{" "}
+        <Equation>{String.raw`\bx`}</Equation>, and{" "}
+        <Equation>{String.raw`\hat{\bx}'`}</Equation> gives the direction of the
+        arrow from <Equation>{String.raw`\bC'`}</Equation> through{" "}
+        <Equation>{String.raw`\bx'`}</Equation>. These are the two viewing rays
+        from Figure 1, each expressed using its own camera's axes.
+      </p>
+      <p>
+        The <Equation>{String.raw`\parallel`}</Equation> symbol means the vectors
+        lie along the same direction; their lengths can differ. These normalized
+        image coordinates are not necessarily unit vectors, and they do not tell
+        us the scene point's depth.
       </p>
       <p>
         <strong>Now describe all three arrows using camera 2's axes.</strong>{" "}
@@ -213,8 +224,8 @@ export function SfmPage() {
         <li>
           <strong>First viewing ray:</strong>{" "}
           <Equation>{String.raw`\overrightarrow{\bC\bx}`}</Equation> has direction{" "}
-          <Equation>{String.raw`R\hat{\bx}`}</Equation>. We rotate its direction
-          because it was originally expressed in camera 1's axes.
+          <Equation>{String.raw`R\hat{\bx}`}</Equation>. This is the same ray
+          direction as before, now expressed using camera 2's axes.
         </li>
         <li>
           <strong>Baseline:</strong>{" "}
