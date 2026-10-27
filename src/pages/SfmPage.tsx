@@ -195,8 +195,8 @@ export function SfmPage() {
         direction of its viewing ray. In each camera's own coordinate frame:
       </p>
       <Equation display>{String.raw`\begin{aligned}
-\hat{\bx} &= K^{-1}\bx \parallel \overrightarrow{\bC\bx} \\
-\hat{\bx}' &= K'^{-1}\bx' \parallel \overrightarrow{\bC'\bx'}
+\hat{\bx} &= K^{-1}\bx \\
+\hat{\bx}' &= K'^{-1}\bx'
 \end{aligned}`}</Equation>
       <p>
         So <Equation>{String.raw`\hat{\bx}`}</Equation> gives the direction of
@@ -206,12 +206,6 @@ export function SfmPage() {
         arrow from <Equation>{String.raw`\bC'`}</Equation> through{" "}
         <Equation>{String.raw`\bx'`}</Equation>. These are the two viewing rays
         from Figure 1, each expressed using its own camera's axes.
-      </p>
-      <p>
-        The <Equation>{String.raw`\parallel`}</Equation> symbol means the vectors
-        lie along the same direction; their lengths can differ. These normalized
-        image coordinates are not necessarily unit vectors, and they do not tell
-        us the scene point's depth.
       </p>
       <p>
         <strong>Now describe all three arrows using camera 2's axes.</strong>{" "}
@@ -242,9 +236,8 @@ export function SfmPage() {
         </li>
       </ul>
       <p>
-        Substitute those three entries into the earlier equation. We can use
-        ray directions because changing the arrows' nonzero lengths does not
-        change whether the triple product is zero:
+        Substitute those three directions into the earlier equation. They lie
+        in the same plane, so their triple product is zero:
       </p>
       <Equation display>{String.raw`(R\hat{\bx}) \cdot
 \bigl((-\mathbf{t}) \times \hat{\bx}'\bigr) = 0`}</Equation>
