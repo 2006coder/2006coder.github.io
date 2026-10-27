@@ -171,119 +171,193 @@ export function SfmPage() {
         display
       >{String.raw`\mathbf{x}'^T_i F \mathbf{x}_i = 0`}</Equation>
       <p>
-        This is the coplanarity constraint from earlier, now written in image
-        coordinates. To see where it comes from, we need to account for the
-        rotation and translation between the two cameras. For this derivation,
-        we drop the subscript <Equation>{String.raw`i`}</Equation> and follow one matched point.
+        How does this connect to the three arrows in Figure 1? We started with
+        two viewing rays and the line joining the cameras:
       </p>
-      <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">1. Put the rays in the same coordinate frame</h3>
+      <Equation display>{String.raw`\overrightarrow{\bC\bx} \cdot
+\left(\overrightarrow{\bC\bC'} \times \overrightarrow{\bC'\bx'}\right) = 0`}</Equation>
       <p>
-        Pixel coordinates depend on the camera's focal lengths and principal point.
-        The intrinsic matrices <Equation>{String.raw`K`}</Equation> and{" "}
-        <Equation>{String.raw`K'`}</Equation> describe that conversion. Applying
-        their inverses gives normalized image coordinates, which describe ray
-        directions in each camera's own frame. These are not necessarily unit vectors:
+        We will rewrite this same equation using pixel coordinates. Each step
+        below replaces one part of the notation. We follow one matched point,
+        so we leave out the subscript <Equation>{String.raw`i`}</Equation> for now.
+      </p>
+      <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">1. Connect the pixels to the three arrows</h3>
+      <p>
+        <strong>A pixel point and a viewing ray are different things.</strong>{" "}
+        <Equation>{String.raw`\bx = [x,y,1]^T`}</Equation> stores a location in the
+        image. The arrow <Equation>{String.raw`\overrightarrow{\bC\bx}`}</Equation>{" "}
+        points from the camera through that location into the 3D scene.
+      </p>
+      <p>
+        The camera's intrinsic matrix <Equation>{String.raw`K`}</Equation> describes
+        how its focal lengths and principal point convert a ray direction into
+        pixel coordinates. Its inverse undoes that conversion:
       </p>
       <Equation display>{String.raw`\begin{aligned}
 \hat{\bx} &= K^{-1}\bx \\
 \hat{\bx}' &= K'^{-1}\bx'
 \end{aligned}`}</Equation>
       <p>
-        Let <Equation>{String.raw`R`}</Equation> rotate coordinates from camera 1's
-        axes into camera 2's axes, and let <Equation>{String.raw`\mathbf{t}`}</Equation>{" "}
-        be the translation in camera 2's frame. The same physical point has
-        coordinates <Equation>{String.raw`\bX`}</Equation> in the first frame and{" "}
-        <Equation>{String.raw`\bX'`}</Equation> in the second:
+        The hats mean we have converted the pixels into ray directions. Each
+        direction is still written using its own camera's axes. These are called
+        normalized image coordinates; they do not have to be unit-length vectors.
       </p>
-      <Equation display>{String.raw`\bX' = R\bX + \mathbf{t}`}</Equation>
       <p>
-        Each image gives a direction but loses the depth. Write those unknown
-        depth scales as <Equation>{String.raw`\lambda`}</Equation> and{" "}
-        <Equation>{String.raw`\lambda'`}</Equation>. Substituting the rays into
-        the camera transform gives:
+        <strong>Now describe all three arrows using camera 2's axes.</strong>{" "}
+        The relative rotation <Equation>{String.raw`R`}</Equation> rotates directions
+        from camera 1's axes into camera 2's. The translation{" "}
+        <Equation>{String.raw`\mathbf{t}`}</Equation> is the position of camera 1's
+        center in this second frame. Camera 2's center is at the origin.
       </p>
-      <Equation display>{String.raw`\begin{gathered}
+      <ul className="mb-5 ml-6 space-y-3 list-disc">
+        <li>
+          <strong>First viewing ray:</strong>{" "}
+          <Equation>{String.raw`\overrightarrow{\bC\bx}`}</Equation> has direction{" "}
+          <Equation>{String.raw`R\hat{\bx}`}</Equation>. We rotate its direction
+          because it was originally expressed in camera 1's axes.
+        </li>
+        <li>
+          <strong>Baseline:</strong>{" "}
+          <Equation>{String.raw`\overrightarrow{\bC\bC'}`}</Equation> becomes{" "}
+          <Equation>{String.raw`-\mathbf{t}`}</Equation>. Camera 1 is at{" "}
+          <Equation>{String.raw`\mathbf{t}`}</Equation> and camera 2 is at zero,
+          so this arrow points opposite to <Equation>{String.raw`\mathbf{t}`}</Equation>.
+        </li>
+        <li>
+          <strong>Second viewing ray:</strong>{" "}
+          <Equation>{String.raw`\overrightarrow{\bC'\bx'}`}</Equation> has direction{" "}
+          <Equation>{String.raw`\hat{\bx}'`}</Equation>. It is already expressed
+          in camera 2's axes.
+        </li>
+      </ul>
+      <p>
+        Substitute those three entries into the earlier equation. We can use
+        ray directions because changing the arrows' nonzero lengths does not
+        change whether the triple product is zero:
+      </p>
+      <Equation display>{String.raw`(R\hat{\bx}) \cdot
+\bigl((-\mathbf{t}) \times \hat{\bx}'\bigr) = 0`}</Equation>
+      <p>
+        Next, move the second ray to the front. Reversing a cross product changes
+        its sign, and cycling the three vectors in a scalar triple product leaves
+        its value unchanged:
+      </p>
+      <Equation display>{String.raw`\begin{aligned}
+0 &= (R\hat{\bx}) \cdot \bigl((-\mathbf{t}) \times \hat{\bx}'\bigr) \\
+  &= (R\hat{\bx}) \cdot \bigl(\hat{\bx}' \times \mathbf{t}\bigr) \\
+  &= \hat{\bx}' \cdot \bigl(\mathbf{t} \times R\hat{\bx}\bigr)
+\end{aligned}`}</Equation>
+      <p>
+        We now have the second ray dotted with a normal to the plane containing
+        the translation and first ray. This is still the original coplanarity condition.
+      </p>
+      <details className="my-8">
+        <summary className="cursor-pointer font-bold">Check this using the rotation and translation equation</summary>
+        <p className="mt-4">
+          Let <Equation>{String.raw`\bX`}</Equation> and{" "}
+          <Equation>{String.raw`\bX'`}</Equation> be the coordinates of the same
+          scene point in the two camera frames. With the convention above:
+        </p>
+        <Equation display>{String.raw`\bX' = R\bX + \mathbf{t}`}</Equation>
+        <p>
+          A ray gives a direction but not the point's depth. For unknown depth
+          scales <Equation>{String.raw`\lambda`}</Equation> and{" "}
+          <Equation>{String.raw`\lambda'`}</Equation>, substitute:
+        </p>
+        <Equation display>{String.raw`\begin{gathered}
 \bX = \lambda\hat{\bx}, \qquad \bX' = \lambda'\hat{\bx}' \\
 \lambda'\hat{\bx}' = \lambda R\hat{\bx} + \mathbf{t}
 \end{gathered}`}</Equation>
-      <p>
-        The last equation says that the second ray lies in the plane spanned by
-        the rotated first ray and the translation. Their cross product is
-        perpendicular to that plane, so its dot product with the second ray is zero:
-      </p>
-      <Equation display>{String.raw`\hat{\bx}'^T\bigl(\mathbf{t} \times R\hat{\bx}\bigr) = 0`}</Equation>
-      <details className="my-8">
-        <summary className="cursor-pointer font-bold">How does the translation relate to the camera centers?</summary>
-        <p className="mt-4">
-          With this convention, camera 1's center is at the origin of frame 1,
-          so its position in frame 2 is <Equation>{String.raw`\mathbf{t}`}</Equation>.
-          Camera 2's center has position <Equation>{String.raw`-R^T\mathbf{t}`}</Equation>{" "}
-          in frame 1. Thus the baseline from camera 1 to camera 2 is
-          <Equation>{String.raw`\,-R^T\mathbf{t}`}</Equation> in frame 1, or{" "}
-          <Equation>{String.raw`-\mathbf{t}`}</Equation> in frame 2.
-        </p>
         <p>
-          Reversing a vector or exchanging two vectors in a scalar triple product
-          changes its sign. It does not change whether the result is zero.
-          That is why this equation expresses the same coplanarity condition
-          as the earlier equation using the camera centers.
+          The second ray is a linear combination of the rotated first ray and
+          the translation. All three therefore lie in one plane, exactly as
+          the triple-product equation requires.
         </p>
       </details>
-      <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">2. Write the cross product as a matrix</h3>
+      <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">2. Group the camera motion into E</h3>
       <p>
-        The cross-product symbol is an operation, not the image point{" "}
-        <Equation>{String.raw`\bx`}</Equation>. For any vector{" "}
-        <Equation>{String.raw`\mathbf{v}`}</Equation>, crossing with a fixed
-        translation is equivalent to multiplying by this matrix:
+        The next change is just algebra: replace the cross product with a matrix
+        multiplication. For <Equation>{String.raw`\mathbf{t}=[t_1,t_2,t_3]^T`}</Equation>,
+        define:
       </p>
-      <Equation display>{String.raw`\begin{gathered}
-[\mathbf{t}]_\times =
+      <Equation display>{String.raw`[\mathbf{t}]_\times =
 \begin{bmatrix}
 0 & -t_3 & t_2 \\
 t_3 & 0 & -t_1 \\
 -t_2 & t_1 & 0
-\end{bmatrix} \\
-\mathbf{t} \times \mathbf{v} = [\mathbf{t}]_\times\mathbf{v}
-\end{gathered}`}</Equation>
+\end{bmatrix}`}</Equation>
       <p>
-        Substitute this into the coplanarity equation. The rotation and translation
-        combine into the <strong>essential matrix</strong>:
+        Multiplying by this matrix does the same thing as crossing with{" "}
+        <Equation>{String.raw`\mathbf{t}`}</Equation>. In our equation:
+      </p>
+      <Equation display>{String.raw`\mathbf{t} \times (R\hat{\bx})
+= [\mathbf{t}]_\times R\hat{\bx}`}</Equation>
+      <p>
+        A dot product can also be written as a transposed vector times a column.
+        Make those two replacements, then give the middle pair of matrices the
+        name <Equation>{String.raw`E`}</Equation>:
       </p>
       <Equation display>{String.raw`\begin{gathered}
-\hat{\bx}'^T[\mathbf{t}]_\times R\hat{\bx} = 0 \\
-E = [\mathbf{t}]_\times R, \qquad \hat{\bx}'^T E\hat{\bx} = 0
+\hat{\bx}'^T \underbrace{[\mathbf{t}]_\times R}_{E}\hat{\bx} = 0 \\
+\hat{\bx}'^T E\hat{\bx} = 0
 \end{gathered}`}</Equation>
-      <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">3. Return to pixel coordinates</h3>
       <p>
-        Our matched points are measured in pixels. Substitute the normalized
-        coordinates from step 1, remembering that transposing a product reverses
-        its order:
+        This is the <strong>essential matrix</strong>. It contains the rotation
+        and translation, and it acts on the normalized ray coordinates.
+      </p>
+      <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">3. Include the pixel conversion in F</h3>
+      <p>
+        We started with pixel matches, so put{" "}
+        <Equation>{String.raw`\hat{\bx}=K^{-1}\bx`}</Equation> and{" "}
+        <Equation>{String.raw`\hat{\bx}'=K'^{-1}\bx'`}</Equation> back into the
+        equation we just obtained:
+      </p>
+      <Equation display>{String.raw`(K'^{-1}\bx')^T E(K^{-1}\bx) = 0`}</Equation>
+      <p>
+        Transposing a product reverses its order. This explains the inverse
+        transpose on the left:
+      </p>
+      <Equation display>{String.raw`(K'^{-1}\bx')^T = \bx'^T K'^{-T}`}</Equation>
+      <p>
+        Now group everything between the two pixel points into one matrix,
+        called <Equation>{String.raw`F`}</Equation>:
       </p>
       <Equation display>{String.raw`\begin{gathered}
-(K'^{-1}\bx')^T E(K^{-1}\bx) = 0 \\
-\bx'^T K'^{-T} E K^{-1}\bx = 0 \\
-F = K'^{-T}[\mathbf{t}]_\times R K^{-1} \\
+\bx'^T \underbrace{K'^{-T} E K^{-1}}_{F}\bx = 0 \\
 \bx'^T F\bx = 0
 \end{gathered}`}</Equation>
       <p>
-        Here <Equation>{String.raw`K'^{-T} = (K'^{-1})^T`}</Equation>.
-        The fundamental matrix combines the cameras' internal calibration with
-        their relative motion. The geometry has not changed: two viewing rays
-        and the baseline must still lie in one plane.
+        <strong>This is the equation we wanted.</strong> The first equation used
+        three arrows in 3D. The last equation uses two pixel points. Both say
+        that the viewing rays and the baseline lie in one plane.
       </p>
+      <ul className="mb-5 ml-6 space-y-3 list-disc">
+        <li>
+          <Equation>{String.raw`E=[\mathbf{t}]_\times R`}</Equation> groups the
+          camera motion and works with normalized coordinates.
+        </li>
+        <li>
+          <Equation>{String.raw`F=K'^{-T} E K^{-1}`}</Equation> also includes the
+          pixel conversions, so it works directly with pixel coordinates.
+        </li>
+      </ul>
+      <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">Where does the epipolar line fit?</h3>
       <p>
-        This also connects to the epipolar line introduced above. Multiplying
-        by <Equation>{String.raw`F`}</Equation> gives the line's three coefficients,
-        and the matching point must satisfy its equation:
+        Look at the final equation in two steps. First compute{" "}
+        <Equation>{String.raw`F\bx`}</Equation>. Its three entries are the
+        coefficients of the epipolar line in the second image:
       </p>
-      <Equation display>{String.raw`\begin{gathered}
-\mathbf{l}' = F\bx = \begin{bmatrix} a \\ b \\ c \end{bmatrix} \\
-\bx'^T\mathbf{l}' = ax' + by' + c = 0
-\end{gathered}`}</Equation>
+      <Equation display>{String.raw`\mathbf{l}' = F\bx = \begin{bmatrix} a \\ b \\ c \end{bmatrix}`}</Equation>
+      <p>
+        Then multiply by the matching pixel point. The result is exactly the
+        familiar equation for a point lying on a line:
+      </p>
+      <Equation display>{String.raw`\bx'^T\mathbf{l}' = ax' + by' + c = 0`}</Equation>
       <p>
         We used camera motion to explain the form of <Equation>{String.raw`F`}</Equation>.
-        We do not need to know that motion or the intrinsic matrices to estimate
-        <Equation>{String.raw`\,F`}</Equation> from point matches. That is the next step.
+        In practice, we can estimate its entries from pixel matches without
+        first knowing the motion or calibration. The next section turns each
+        match into one equation in those nine unknown entries.
       </p>
       <h3 className="mt-7 mb-4 text-[28px] font-bold leading-tight sm:text-[32px]">
         Deriving the System of Equations (
@@ -681,14 +755,6 @@ x_m x'_m & x_m y'_m & x_m & y_m x'_m & y_m y'_m & y_m & x'_m & y'_m & 1
         <em>CMSC733 Project 3: Build your own SfM!</em> Retrieved from{" "}
         <Link className="break-all" href="https://cmsc733.github.io/2022/proj/p3/">
           https://cmsc733.github.io/2022/proj/p3/
-        </Link>
-      </p>
-      <p>
-        [2] Richard Hartley and Andrew Zisserman. <em>Multiple View Geometry in
-        Computer Vision</em>, second edition. Chapter 9: Epipolar Geometry and the
-        Fundamental Matrix.{" "}
-        <Link href="https://www.robots.ox.ac.uk/~vgg/hzbook/hzbook2/HZepipolar.pdf">
-          Read the chapter
         </Link>
       </p>
       <div className="my-7">
